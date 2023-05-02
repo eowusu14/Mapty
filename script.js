@@ -16,31 +16,38 @@ navigator.geolocation.getCurrentPosition(function(position) {
     console.log(position);
     const { latitude } = position.coords
     const { longitude } = position.coords
-    console.log(latitude, longitude);
+    // console.log(latitude, longitude);
 
     const coords = [latitude, longitude]
 
-    const map = L.map('map').setView(coords, 13);
+    const map = L.map('map').setView(coords, 18);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'    
     }).addTo(map);
-
-    var marker = L.marker(coords)
+    
+    const marker = L.marker(coords)
     .addTo(map)
     .bindPopup('You are here')
     .openPopup();
+    
+    L.circleMarker(coords, {radius: position.coords.accuracy})
+    .addTo(map)
 
     map.on('click', function(e){
-        console.log(e);
+        // console.log(e);
         const {lat, lng} = e.latlng
         const ptCoords = [lat, lng]
 
         const marker2 = L.marker(ptCoords)
         .addTo(map)
-        .bindPopup('You clicked here')
+        .bindPopup(
+            L.popup({minWidth: 100, maxWidth: 250, autoClose: false, closeOnclick: false, className: 'running-popup'})
+            )
+        .setPopupContent('Workout')
         .openPopup()
+
     })
 
 
