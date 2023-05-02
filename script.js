@@ -27,7 +27,21 @@ navigator.geolocation.getCurrentPosition(function(position) {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'    
     }).addTo(map);
 
-    var marker = L.marker(coords).addTo(map);
+    var marker = L.marker(coords)
+    .addTo(map)
+    .bindPopup('You are here')
+    .openPopup();
+
+    map.on('click', function(e){
+        console.log(e);
+        const {lat, lng} = e.latlng
+        const ptCoords = [lat, lng]
+
+        const marker2 = L.marker(ptCoords)
+        .addTo(map)
+        .bindPopup('You clicked here')
+        .openPopup()
+    })
 
 
 }, 
